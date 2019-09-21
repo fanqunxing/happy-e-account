@@ -7,10 +7,39 @@ Page({
     userInfo: {},
     logged: false,
     takeSession: false,
-    requestResult: ''
+    requestResult: '',
+    accountList: [],
+    totalAccount: 0
   },
 
-  onLoad: function() {
+  onShow() {
+    const _this = this;
+    const db = wx.cloud.database({});
+    const table = db.collection('db_account');
+    console.log(table);
+    table.where({
+      _openid: app.globalData.openid,
+    }).get({
+      success(res) {
+        const { data } = res;
+        if (Array.isArray(data)) {
+          var totalAccount = 0;
+          data.forEach(({ accountVal }) => {
+            totalAccount += Number(accountVal);
+          });
+          _this.setData({
+            totalAccount
+          })
+        }
+        
+        _this.setData({
+          accountList: data
+        })
+      }
+    })
+  },
+
+  onLoad: function () {
     if (!wx.cloud) {
       wx.redirectTo({
         url: '../chooseLib/chooseLib',
@@ -36,7 +65,7 @@ Page({
     })
   },
 
-  onGetUserInfo: function(e) {
+  onGetUserInfo: function (e) {
     if (!this.logged && e.detail.userInfo) {
       this.setData({
         logged: true,
@@ -46,12 +75,13 @@ Page({
     }
   },
 
-  onGetOpenid: function() {
+  onGetOpenid: function () {
     // 调用云函数
     wx.cloud.callFunction({
       name: 'login',
       data: {},
       success: res => {
+        console.log({ res });
         console.log('[云函数] [login] user openid: ', res.result.openid)
         app.globalData.openid = res.result.openid
         wx.navigateTo({
@@ -67,54 +97,11 @@ Page({
     })
   },
 
-  // 上传图片
-  doUpload: function () {
-    // 选择图片
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-
-        wx.showLoading({
-          title: '上传中',
-        })
-
-        const filePath = res.tempFilePaths[0]
-        
-        // 上传图片
-        const cloudPath = 'my-image' + filePath.match(/\.[^.]+?$/)[0]
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath,
-          success: res => {
-            console.log('[上传文件] 成功：', res)
-
-            app.globalData.fileID = res.fileID
-            app.globalData.cloudPath = cloudPath
-            app.globalData.imagePath = filePath
-            
-            wx.navigateTo({
-              url: '../storageConsole/storageConsole'
-            })
-          },
-          fail: e => {
-            console.error('[上传文件] 失败：', e)
-            wx.showToast({
-              icon: 'none',
-              title: '上传失败',
-            })
-          },
-          complete: () => {
-            wx.hideLoading()
-          }
-        })
-
-      },
-      fail: e => {
-        console.error(e)
-      }
+  // 跳转记账页面
+  addAccount() {
+    wx.navigateTo({
+      url: '../addAccount/addAccount'
     })
-  },
+  }
 
 })

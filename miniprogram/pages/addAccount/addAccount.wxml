@@ -1,0 +1,23 @@
+<view>
+  <view class="title">我来记账</view>
+
+  <view class="add-item-warp">
+    <view class="add-item">
+      消费金额：
+      <input type="text" class="add-input" bindinput="addInput" />
+    </view>
+    <view class="add-item">
+      备注名称：
+      <input type="text" class="add-mark" bindinput="markInput" />
+    </view>
+  </view>
+
+  <view class="btn-module">
+    <view class="btn-warp">
+      <button class="btn-cancel btn" bindtap="cancel">取消</button>
+      <button class="btn-sure btn" bindtap="sure">确定</button>
+    </view>
+  </view>
+
+
+</view>
