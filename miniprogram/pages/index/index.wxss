@@ -67,13 +67,15 @@ page {
 }
 
 .all-data-list {
-  padding: 0 20px;
+  font-size: 20rpx;
+  border-bottom: #ccc 1rpx solid;
 }
 .all-data-item {
   border-top: #ccc 1rpx solid;
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 }
 
 .all-data-item-name,
@@ -82,11 +84,33 @@ page {
   line-height: 40px;
 }
 
+.del-account {
+  background: #337ab7;
+  width: 90rpx;
+  height: 40rpx;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20rpx;
+}
+
 .add-account-warp {
   padding: 10px;
 }
 .add-account {
-  width: 100px;
+  width: 150rpx;
   background: #168ced;
   color: #fff;
+  font-size: 20rpx;
+}
+
+.all-data-item .item {
+  text-align: center;
+}
+
+.all-data-item .all-data-item-time {
+  width: 200rpx;
+  color: #666;
 }

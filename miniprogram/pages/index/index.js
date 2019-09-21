@@ -12,11 +12,10 @@ Page({
     totalAccount: 0
   },
 
-  onShow() {
+  getAllAccoutList() {
     const _this = this;
     const db = wx.cloud.database({});
     const table = db.collection('db_account');
-    console.log(table);
     table.where({
       _openid: app.globalData.openid,
     }).get({
@@ -31,12 +30,16 @@ Page({
             totalAccount
           })
         }
-        
+
         _this.setData({
           accountList: data
         })
       }
-    })
+    });
+  },
+
+  onShow() {
+    this.getAllAccoutList();
   },
 
   onLoad: function () {
@@ -108,6 +111,32 @@ Page({
   addAccount() {
     wx.navigateTo({
       url: '../addAccount/addAccount'
+    })
+  },
+
+  delClick(event) {
+    const id = event.target.dataset.id;
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除吗？',
+      success: (sm) => {
+        if (sm.confirm) {
+          this.delAccount(id);
+        }
+      }
+    });
+  },
+
+  delAccount(id) {
+    const db = wx.cloud.database({});
+    const table = db.collection('db_account');
+    table.doc(id).remove({
+      success: (res) => {
+        this.getAllAccoutList();
+        wx.showToast({
+          title: '删除成功'
+        });
+      }
     })
   }
 

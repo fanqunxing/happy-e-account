@@ -20,10 +20,11 @@
 
     <view class="all-data-list">
       <view class="all-data-item" wx:for="{{accountList}}" wx:for-item="item" wx:key="this">
-        <view class="all-data-item-name">{{item.accountName}}</view>
-        <view class="all-data-item-value">￥{{item.accountVal}}</view>
+        <view class="item all-data-item-time">{{item.time}}</view>
+        <view class="item all-data-item-name">{{item.accountName}}</view>
+        <view class="item all-data-item-value">￥{{item.accountVal}}</view>
+        <view class="item del-account" data-id="{{item._id}}" bindtap="delClick">删除</view>
       </view>
-
     </view>
   </view>
 
