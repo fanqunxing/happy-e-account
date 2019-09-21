@@ -60,6 +60,13 @@ Page({
               })
             }
           })
+        } else {
+          wx.authorize({
+            scope: 'scope.userInfo',
+            success: () => {
+              console.log('yes')
+            }
+          })
         }
       }
     })
