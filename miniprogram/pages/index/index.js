@@ -1,6 +1,6 @@
 //index.js
 const app = getApp()
-
+var { getMonthAndDay } = require("../../public/js/common.js");
 Page({
   data: {
     isAdmin: false,
@@ -26,19 +26,22 @@ Page({
     const db = wx.cloud.database({});
     const table = db.collection('db_account');
     var _openid = app.globalData.openid;
-    if (this.data.isAdmin) {
-      _openid = undefined;
-    }
+    // if (this.data.isAdmin) {
+    //   _openid = undefined;
+    // }
     table.where({
       _openid,
     })
       .orderBy('time', 'asc')
       .get({
-        success(res) {
-          const { data } = res;
+        success: (res) => {
+          var { data } = res;
+          data = data.reverse();
           if (Array.isArray(data)) {
             var totalAccount = 0;
-            data.forEach(({ accountVal }) => {
+            data.forEach((item) => {
+              var { accountVal, time } = item;
+              item.time = getMonthAndDay(time);
               totalAccount += Number(accountVal);
             });
             _this.setData({
@@ -92,6 +95,13 @@ Page({
     })
   },
 
+  lookClick(event) {
+    var id = event.target.dataset.id;
+    wx.navigateTo({
+      url: '../addAccount/addAccount?look=1&id=' + id
+    })
+  },
+
   onLoad: function () {
     this.onGetOpenid();
     // 获取用户信息
@@ -129,10 +139,11 @@ Page({
   },
 
   delClick(event) {
-    const id = event.target.dataset.id;
+    var accountName = event.target.dataset.accountname;
+    var id = event.target.dataset.id;
     wx.showModal({
       title: '提示',
-      content: '确定要删除吗？',
+      content: `您确定要删除"${accountName}"吗？`,
       success: (sm) => {
         if (sm.confirm) {
           this.delAccount(id);

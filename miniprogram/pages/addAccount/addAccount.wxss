@@ -52,6 +52,9 @@
   flex: 1;
   justify-content: flex-start;
 }
+.img-warp {
+  padding: 20rpx;
+}
 
 
 

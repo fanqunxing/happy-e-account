@@ -35,7 +35,8 @@
       <view class="td name">{{item.accountName}}</view>
       <view class="td value">{{item.accountVal}}</view>
       <view class="td btn">
-        <view class="item del-account" data-id="{{item._id}}" bindtap="delClick">删除</view>
+        <view class="item del-account" data-id="{{item._id}}" bindtap="lookClick">详情</view>
+        <!-- <view class="item del-account" data-accountName="{{item.accountName}}" data-id="{{item._id}}" bindtap="delClick">删除</view> -->
       </view>
     </view>
   </view>

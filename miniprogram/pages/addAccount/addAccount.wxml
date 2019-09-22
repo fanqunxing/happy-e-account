@@ -3,11 +3,15 @@
   <view class="add-table table">
     <view class="tr">
       <view class="td name">
-        名称
+        分类
         <view class="require">*</view>
       </view>
       <view class="td value">
-        <input type="text" bindinput="nameInput" placeholder="请输入名称" placeholder-class="phcolor" />
+        <picker bindchange="bindPickerChange" range-key="name" value="{{index}}" range="{{accountTypes}}">
+          <view class="picker">
+            {{accountTypeName}}
+          </view>
+        </picker>
       </view>
     </view>
     <view class="tr">
@@ -16,17 +20,15 @@
         <view class="require">*</view>
       </view>
       <view class="td value">
-        <input type="text" bindinput="addInput" placeholder="请输入金额" placeholder-class="phcolor" />
+        <input type="text" value="{{accountVal}}" bindinput="addInput" placeholder="请输入金额" placeholder-class="phcolor" />
       </view>
     </view>
     <view class="tr">
-      <view class="td name">分类</view>
+      <view class="td name">
+        名称
+      </view>
       <view class="td value">
-        <picker bindchange="bindPickerChange" range-key="name" value="{{index}}" range="{{accountTypes}}">
-          <view class="picker">
-              当前选择: {{accountTypeName}}
-          </view>
-        </picker>
+        <input type="text" value="{{accountName}}" bindinput="nameInput" placeholder="请输入名称" placeholder-class="phcolor" />
       </view>
     </view>
     <view class="tr">
@@ -34,20 +36,32 @@
       <view class="td value">
         <picker mode="date" value="{{time}}" start="2019-09-01" end="{{today}}" bindchange="bindDateChange">
           <view class="picker">
-            当前选择: {{time}}
+            {{time}}
             </view>
         </picker>
       </view>
     </view>
+
+    <view class="tr">
+      <view class="td name">图片</view>
+      <view class="td value">
+        <view bindtap="selectImg">选择</view>
+      </view>
+    </view>
+
     <view class="tr">
       <view class="td name">备注</view>
       <view class="td value">
-        <input type="text" placeholder="请输入备注" bindinput="markInput" placeholder-class="phcolor" />
+        <input type="text" value="{{accountMark}}" placeholder="请输入备注" bindinput="markInput" placeholder-class="phcolor" />
       </view>
     </view>
-    <view class="tr">
-      <button class="btn-sure btn" bindtap="sure">确认记账</button>
+    <view class="img-warp">
+      <image style="width: {{imgWidth}}rpx; height: {{imgHeight}}rpx" src="{{fileid}}" bindload="imageLoad"></image>
     </view>
-  </view>
+    <view class="tr">
+      <button wx:if="{{!isLook}}" class="btn-sure btn" bindtap="sure">确认记账</button>
+      <button wx:else  class="btn-sure btn" bindtap="delClick">删除</button>
+    </view>
 
+  </view>
 </view>
