@@ -39,13 +39,18 @@
   color: red;
 }
 
+.table .tr .td input{
+  text-align: left;
+}
 .table .tr .td.name {
-  width: 260rpx;
+  width: 200rpx;
   border-right: 1rpx #f4f4f4 solid;
 }
 
 .table .tr .td.value {
+  padding-left: 30rpx;
   flex: 1;
+  justify-content: flex-start;
 }
 
 

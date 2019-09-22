@@ -7,7 +7,7 @@
         <view class="require">*</view>
       </view>
       <view class="td value">
-        <input type="text" bindinput="markInput" placeholder="请输入名称" placeholder-class="phcolor" />
+        <input type="text" bindinput="nameInput" placeholder="请输入名称" placeholder-class="phcolor" />
       </view>
     </view>
     <view class="tr">
@@ -22,19 +22,27 @@
     <view class="tr">
       <view class="td name">分类</view>
       <view class="td value">
-        <input type="text" placeholder="请输入分类" placeholder-class="phcolor" />
+        <picker bindchange="bindPickerChange" range-key="name" value="{{index}}" range="{{accountTypes}}">
+          <view class="picker">
+              当前选择: {{accountTypeName}}
+          </view>
+        </picker>
       </view>
     </view>
     <view class="tr">
       <view class="td name">时间</view>
       <view class="td value">
-        <input type="text" bindinput="timeInput" value="{{time}}" placeholder="请输入备注" placeholder-class="phcolor" />
+        <picker mode="date" value="{{time}}" start="2019-09-01" end="{{today}}" bindchange="bindDateChange">
+          <view class="picker">
+            当前选择: {{time}}
+            </view>
+        </picker>
       </view>
     </view>
     <view class="tr">
       <view class="td name">备注</view>
       <view class="td value">
-        <input type="text" placeholder="请输入备注" placeholder-class="phcolor" />
+        <input type="text" placeholder="请输入备注" bindinput="markInput" placeholder-class="phcolor" />
       </view>
     </view>
     <view class="tr">

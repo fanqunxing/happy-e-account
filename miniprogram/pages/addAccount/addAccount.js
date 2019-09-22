@@ -3,13 +3,47 @@ var { formatDate } = common;
 
 Page({
   data: {
+    today: formatDate(new Date()),
+    accountMark: '',
     accountName: '',
     accountVal: 0,
-    time: formatDate(new Date())
+    accountType: '99',
+    accountTypeName: '其他',
+    time: formatDate(new Date()),
+    accountTypes: []
   },
 
   onShow() {
-    console.log(common);
+    this.getAccoutTypes();
+  },
+
+  getAccoutTypes() {
+    const db = wx.cloud.database({});
+    const table = db.collection('db_accountType');
+    table.get({
+      success: (res) => {
+        var { data } = res; 
+        this.setData({
+          accountTypes: data
+        })
+      }
+    })
+  },
+
+  bindPickerChange(event) {
+    var val = event.detail.value;
+    var { code, name } = this.data.accountTypes[val];
+    this.setData({
+      accountType: code,
+      accountTypeName: name
+    })
+  },
+
+  bindDateChange(event) {
+    var val = event.detail.value;
+    this.setData({
+      time: val
+    })
   },
 
   cancel() {
@@ -27,12 +61,20 @@ Page({
     });
   },
 
-  markInput(event) {
+  nameInput(event) {
     const accountName = event.detail.value;
     this.setData({
       accountName
     });
   },
+
+  markInput(event) {
+    const accountMark = event.detail.value;
+    this.setData({
+      accountMark
+    });
+  },
+
 
   timeInput(event) {
     const time = event.detail.value;
@@ -75,11 +117,13 @@ Page({
   sure() {
     var ischeck = this.checkVail();
     if (!ischeck) return;
-    const { accountName, accountVal, time } = this.data;
+    const { accountName, accountVal, accountMark, accountType, time } = this.data;
     const db = wx.cloud.database({});
     const table = db.collection('db_account');
     table.add({
       data: {
+        accountMark,
+        accountType,
         accountName,
         accountVal,
         time

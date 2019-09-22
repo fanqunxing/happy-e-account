@@ -18,7 +18,9 @@ Page({
     const table = db.collection('db_account');
     table.where({
       _openid: app.globalData.openid,
-    }).get({
+    })
+    .orderBy('time', 'asc')
+    .get({
       success(res) {
         const { data } = res;
         if (Array.isArray(data)) {
