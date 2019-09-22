@@ -3,6 +3,7 @@ const app = getApp()
 
 Page({
   data: {
+    isAdmin: false,
     avatarUrl: './user-unlogin.png',
     userInfo: {},
     logged: false,
@@ -24,8 +25,12 @@ Page({
     const _this = this;
     const db = wx.cloud.database({});
     const table = db.collection('db_account');
+    var _openid = app.globalData.openid;
+    if (this.data.isAdmin) {
+      _openid = undefined;
+    }
     table.where({
-      _openid: app.globalData.openid,
+      _openid,
     })
       .orderBy('time', 'asc')
       .get({
@@ -68,7 +73,12 @@ Page({
       data: {},
       success: res => {
         console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
+        app.globalData.openid = res.result.openid;
+        if (res.result.openid === "oDs3N4oTf9m4KL8ozMp8iNZj6-zA") {
+          this.setData({
+            isAdmin: true
+          });
+        }
         fn && fn();
       },
       fail: err => {
