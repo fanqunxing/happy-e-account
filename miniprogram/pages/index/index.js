@@ -13,31 +13,39 @@ Page({
   },
 
   getAllAccoutList() {
+    if (!app.globalData.openid) {
+      this.onGetOpenid(this.getAllAccout);
+    } else {
+      this.getAllAccout();
+    }
+  },
+
+  getAllAccout() {
     const _this = this;
     const db = wx.cloud.database({});
     const table = db.collection('db_account');
     table.where({
       _openid: app.globalData.openid,
     })
-    .orderBy('time', 'asc')
-    .get({
-      success(res) {
-        const { data } = res;
-        if (Array.isArray(data)) {
-          var totalAccount = 0;
-          data.forEach(({ accountVal }) => {
-            totalAccount += Number(accountVal);
-          });
+      .orderBy('time', 'asc')
+      .get({
+        success(res) {
+          const { data } = res;
+          if (Array.isArray(data)) {
+            var totalAccount = 0;
+            data.forEach(({ accountVal }) => {
+              totalAccount += Number(accountVal);
+            });
+            _this.setData({
+              totalAccount
+            })
+          }
+
           _this.setData({
-            totalAccount
+            accountList: data
           })
         }
-
-        _this.setData({
-          accountList: data
-        })
-      }
-    });
+      });
   },
 
   onShow() {
@@ -53,17 +61,29 @@ Page({
     this.getAllAccoutList();
   },
 
+  // 设置openid
+  onGetOpenid: function (fn) {
+    wx.cloud.callFunction({
+      name: 'login',
+      data: {},
+      success: res => {
+        console.log('[云函数] [login] user openid: ', res.result.openid)
+        app.globalData.openid = res.result.openid
+        fn && fn();
+      },
+      fail: err => {
+      }
+    })
+  },
+
+  goMyHome() {
+    wx.navigateTo({
+      url: '../home/home'
+    })
+  },
+
   onLoad: function () {
-    // wx.getLocation({
-    //  type: 'wgs84',
-    //   success(res) {
-    //     const latitude = res.latitude
-    //     const longitude = res.longitude
-    //     const speed = res.speed
-    //     const accuracy = res.accuracy
-    //     console.log(res);
-    //   }
-    // })
+    this.onGetOpenid();
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -75,12 +95,14 @@ Page({
         } else {
           wx.getUserInfo({
             success: (res) => {
+              console.log(res);
               var { userInfo } = res;
               this.setData({
                 logged: true,
                 avatarUrl: userInfo.avatarUrl,
                 userInfo: userInfo
               });
+              app.globalData.userInfo = userInfo;
               this.getAllAccoutList();
             }
           })

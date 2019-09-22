@@ -1,0 +1,3 @@
+<view>
+  <view bindtap="addHome">创建一个家园</view>
+</view>

@@ -21,8 +21,14 @@ page {
   flex-direction: row;
   align-items: center;
   transition: all 300ms ease;
+  justify-content: space-between;
 }
-
+.my-userinfo {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  height: 140rpx;
+}
 .userinfo-avatar {
   width: 100rpx;
   height: 100rpx;
@@ -36,8 +42,14 @@ page {
   border: none;
 }
 
-.nickName {
+.nickName, .home {
   color: #168ced;
+  display: flex;
+  align-self: center;
+}
+
+.home {
+  padding-right: 30rpx;
 }
 
 .all-data {

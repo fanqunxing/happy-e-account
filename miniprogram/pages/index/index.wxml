@@ -2,13 +2,17 @@
 <view class="container">
 
   <view class="userinfo">
-    <button 
-      open-type="getUserInfo" 
-      bindgetuserinfo="onGetUserInfo"
-      class="userinfo-avatar"
-      style="background-image: url({{avatarUrl}})"
-    ></button>
-    <view class="nickName">{{userInfo.nickName}}</view>
+    <view class="my-userinfo">
+      <button 
+        open-type="getUserInfo" 
+        bindgetuserinfo="onGetUserInfo"
+        class="userinfo-avatar"
+        style="background-image: url({{avatarUrl}})"
+      ></button>
+      <view class="nickName">{{userInfo.nickName}}</view>
+    </view>
+
+    <!-- <view class="home" bindtap="goMyHome">我的家园</view> -->
   </view>
 
   <view class="add-account-warp">
