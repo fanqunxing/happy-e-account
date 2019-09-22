@@ -58,10 +58,12 @@ Page({
         break;
       }
     } while (false);
-    wx.showToast({
-      icon: 'none',
-      title: msg
-    });
+    if (msg) {
+      wx.showToast({
+        icon: 'none',
+        title: msg
+      });
+    }
     return bflag;
   },
 
@@ -78,14 +80,14 @@ Page({
         accountVal,
         time
       },
-      success: function (res) {
-        console.log(res._id)
+      success: res => {
+        wx.navigateBack();
+        this.setData({
+          accountName: '',
+          accountVal: 0
+        });
       }
     });
-    wx.navigateBack();
-    this.setData({
-      accountName: '',
-      accountVal: 0
-    });
+
   }
 })
