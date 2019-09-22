@@ -96,21 +96,34 @@ page {
   font-size: 20rpx;
 }
 
-.add-account-warp {
-  padding: 10px;
-}
 .add-account {
   width: 150rpx;
   background: #168ced;
   color: #fff;
-  font-size: 20rpx;
+  font-size: 30rpx;
+  margin-top: 30rpx;
 }
 
-.all-data-item .item {
-  text-align: center;
+
+.table .tr.header {
+  background: #ccc;
+}
+.table .tr {
+  display: flex;
+  font-size: 30rpx;
+  align-items: center;
+  border-bottom: 1rpx #ccc solid;
 }
 
-.all-data-item .all-data-item-time {
-  width: 200rpx;
-  color: #666;
+.table .tr .td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  height: 80rpx;
 }
+
+.table .tr .td.value {
+  color: red;
+}
+

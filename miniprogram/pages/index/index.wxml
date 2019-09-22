@@ -8,7 +8,7 @@
       class="userinfo-avatar"
       style="background-image: url({{avatarUrl}})"
     ></button>
-    掌柜：<view class="nickName">{{userInfo.nickName}}</view>
+    <view class="nickName">{{userInfo.nickName}}</view>
   </view>
 
   <view class="add-account-warp">
@@ -17,12 +17,20 @@
 
   <view class="all-data">
     <view class="all-data-header">本月支出 ￥{{totalAccount}}</view>
+  </view>
 
-    <view class="all-data-list">
-      <view class="all-data-item" wx:for="{{accountList}}" wx:for-item="item" wx:key="this">
-        <view class="item all-data-item-time">{{item.time}}</view>
-        <view class="item all-data-item-name">{{item.accountName}}</view>
-        <view class="item all-data-item-value">￥{{item.accountVal}}</view>
+  <view class="table">
+    <view class="tr header">
+      <view class="td time">日期</view>
+      <view class="td name">名称</view>
+      <view class="td value">金额</view>
+      <view class="td btn">操作</view>
+    </view>
+    <view class="tr" wx:for="{{accountList}}" wx:key="{{index}}" wx:for-item="item">
+      <view class="td time">{{item.time}}</view>
+      <view class="td name">{{item.accountName}}</view>
+      <view class="td value">{{item.accountVal}}</view>
+      <view class="td btn">
         <view class="item del-account" data-id="{{item._id}}" bindtap="delClick">删除</view>
       </view>
     </view>

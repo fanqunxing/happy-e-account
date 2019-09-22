@@ -1,47 +1,55 @@
-.title {
-  width: 100%;
-  text-align: center;
-  line-height: 30px;
-  margin-bottom: 30px;
-}
 
-.add-input,
-.add-mark {
-  border: 1px solid #ccc;
-  width: 170px;
-  border-radius: 4px;
-}
 
-.add-item-warp {
-  width: 300px;
-  margin: auto;
-  padding: 30px 0;
-  background: #fafafa;
-  border-radius: 10px;
-}
-.add-item {
-  color: #333;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.btn-module {
-  display: flex;
-  justify-content: center;
-}
-
-.btn-warp {
-  display: flex;
+.phcolor {
+  color: #ccc;
 }
 
 .btn {
-  width: 100px;
-  background: #168ced;
+  font-size: 30rpx;
+  width: 300rpx;
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e74c48;
   color: #fff;
 }
 
-.btn-cancel {
-  margin-right: 10px;
+.table {
+  border: 1rpx #f4f4f4 solid;
+  color: #666;
+  font-size: 15rxp;
 }
+
+.table .tr {
+  display: flex;
+  height: 100rpx;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx #f4f4f4 solid;
+}
+
+.table .tr .td {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.table .tr .td .require {
+  color: red;
+}
+
+.table .tr .td.name {
+  width: 260rpx;
+  border-right: 1rpx #f4f4f4 solid;
+}
+
+.table .tr .td.value {
+  flex: 1;
+}
+
+
+
+
+
+

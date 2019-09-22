@@ -1,17 +1,15 @@
-function formatDate(now) {
-  var year = now.getFullYear();
-  var month = now.getMonth() + 1;
-  var date = now.getDate();
-  var hour = now.getHours();
-  var minute = now.getMinutes();
-  var second = now.getSeconds();
-  return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
-}
+var common = require("../../public/js/common.js");
+var { formatDate } = common;
 
 Page({
   data: {
     accountName: '',
-    accountVal: 0
+    accountVal: 0,
+    time: formatDate(new Date())
+  },
+
+  onShow() {
+    console.log(common);
   },
 
   cancel() {
@@ -33,6 +31,13 @@ Page({
     const accountName = event.detail.value;
     this.setData({
       accountName
+    });
+  },
+
+  timeInput(event) {
+    const time = event.detail.value;
+    this.setData({
+      time
     });
   },
 
@@ -70,10 +75,9 @@ Page({
   sure() {
     var ischeck = this.checkVail();
     if (!ischeck) return;
-    const { accountName, accountVal } = this.data;
+    const { accountName, accountVal, time } = this.data;
     const db = wx.cloud.database({});
     const table = db.collection('db_account');
-    var time = formatDate(new Date());
     table.add({
       data: {
         accountName,
