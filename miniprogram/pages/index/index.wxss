@@ -52,10 +52,6 @@ page {
   padding-right: 30rpx;
 }
 
-.all-data {
-  margin: 10rpx 20rpx;
-}
-
 .all-data-header {
   display: flex;
   align-items: center;
@@ -67,45 +63,16 @@ page {
   font-size: 12px;
 }
 
-.all-data-num {
-  display: flex;
-  align-items: center;
-  justify-content: center;  
-  width: 100%;
-  color: green;
-  font-weight: 500;
-  line-height: 40px;
-  font-size: 20px;
-}
-
-.all-data-list {
-  font-size: 20rpx;
-  border-bottom: #ccc 1rpx solid;
-}
-.all-data-item {
-  border-top: #ccc 1rpx solid;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.all-data-item-name,
-.all-data-item-value {
-  color: #555;
-  line-height: 40px;
-}
-
 .del-account {
-  background: #337ab7;
+  background: #168ced;
   width: 90rpx;
-  height: 40rpx;
+  height: 50rpx;
   border-radius: 4rpx;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 20rpx;
+  /* font-size: 25rpx; */
 }
 
 .add-account {
@@ -116,15 +83,20 @@ page {
   margin-top: 30rpx;
 }
 
+.table {
+  margin-bottom: 100rpx;
+  background: #fff;
+}
 
 .table .tr.header {
-  background: #ccc;
+  background: #168ced;
+  color: #fff;
 }
 .table .tr {
   display: flex;
   font-size: 30rpx;
   align-items: center;
-  border-bottom: 1rpx #ccc solid;
+  border-bottom: 1rpx #f4f4f4 solid;
 }
 
 .table .tr .td {
@@ -135,7 +107,12 @@ page {
   height: 80rpx;
 }
 
-.table .tr .td.value {
-  color: red;
+.no-data {
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+  color: #333;
 }
 

@@ -12,7 +12,7 @@ Page({
     today: formatDate(new Date()),
     accountMark: '',
     accountName: '',
-    accountVal: 0,
+    accountVal: '',
     accountType: '1',
     accountTypeName: '餐饮',
     time: formatDate(new Date()),

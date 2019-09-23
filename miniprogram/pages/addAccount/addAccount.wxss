@@ -16,9 +16,10 @@
 }
 
 .table {
-  border: 1rpx #f4f4f4 solid;
+  border-top: 1rpx #f4f4f4 solid;
   color: #666;
   font-size: 15rxp;
+  margin-bottom: 200rpx;
 }
 
 .table .tr {
@@ -51,9 +52,6 @@
   padding-left: 30rpx;
   flex: 1;
   justify-content: flex-start;
-}
-.img-warp {
-  padding: 20rpx;
 }
 
 

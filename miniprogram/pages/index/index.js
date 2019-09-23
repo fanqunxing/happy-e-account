@@ -23,37 +23,30 @@ Page({
 
   getAllAccout() {
     const _this = this;
-    const db = wx.cloud.database({});
-    const table = db.collection('db_account');
-    var _openid = app.globalData.openid;
-    // if (this.data.isAdmin) {
-    //   _openid = undefined;
-    // }
-    table.where({
-      _openid,
-    })
-      .orderBy('time', 'asc')
-      .get({
-        success: (res) => {
-          var { data } = res;
-          data = data.reverse();
-          if (Array.isArray(data)) {
-            var totalAccount = 0;
-            data.forEach((item) => {
-              var { accountVal, time } = item;
-              item.time = getMonthAndDay(time);
-              totalAccount += Number(accountVal);
-            });
-            _this.setData({
-              totalAccount
-            })
-          }
-
+    wx.cloud.callFunction({
+      name: 'getaccountlist',
+      data: {},
+      complete: respsonse => {
+        var res = respsonse.result;
+        var { data } = res;
+        data = data.reverse();
+        if (Array.isArray(data)) {
+          var totalAccount = 0;
+          data.forEach((item) => {
+            var { accountVal, time } = item;
+            item.time = getMonthAndDay(time);
+            totalAccount += Number(accountVal);
+          });
           _this.setData({
-            accountList: data
+            totalAccount
           })
         }
-      });
+
+        _this.setData({
+          accountList: data
+        });
+      }
+    });
   },
 
   onShow() {
@@ -103,11 +96,11 @@ Page({
   },
 
   onLoad: function () {
+
     this.onGetOpenid();
     // 获取用户信息
     wx.getSetting({
       success: res => {
-        console.log(res);
         if (!res.authSetting['scope.userInfo']) {
           wx.navigateTo({
             url: '../authorize/authorize'
@@ -115,7 +108,6 @@ Page({
         } else {
           wx.getUserInfo({
             success: (res) => {
-              console.log(res);
               var { userInfo } = res;
               this.setData({
                 logged: true,

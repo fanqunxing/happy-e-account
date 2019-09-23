@@ -45,7 +45,7 @@
     <view class="tr">
       <view class="td name">图片</view>
       <view class="td value">
-        <view bindtap="selectImg">选择</view>
+        <view bindtap="selectImg">拍照</view>
       </view>
     </view>
 
@@ -58,7 +58,7 @@
     <view class="img-warp">
       <image style="width: {{imgWidth}}rpx; height: {{imgHeight}}rpx" src="{{fileid}}" bindload="imageLoad"></image>
     </view>
-    <view class="tr">
+    <view class="btn-warp">
       <button wx:if="{{!isLook}}" class="btn-sure btn" bindtap="sure">确认记账</button>
       <button wx:else  class="btn-sure btn" bindtap="delClick">删除</button>
     </view>
