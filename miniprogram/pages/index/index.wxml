@@ -1,17 +1,11 @@
-<!--index.wxml-->
 <view class="container">
-
   <view class="userinfo">
     <view class="my-userinfo">
-      <button 
-        open-type="getUserInfo" 
-        bindgetuserinfo="onGetUserInfo"
-        class="userinfo-avatar"
-        style="background-image: url({{avatarUrl}})"
-      ></button>
+      <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar" style="background-image: url({{avatarUrl}})"></button>
       <view class="nickName">{{userInfo.nickName}}</view>
     </view>
-
+    <!-- 学问勤中得,富裕俭中来 -->
+    <view class="total-account">总支出 ￥{{totalAccount}}</view>
     <!-- <view class="home" bindtap="goMyHome">我的家园</view> -->
   </view>
 
@@ -19,9 +13,6 @@
     <button class="add-account" bindtap="addAccount">记一笔</button>
   </view>
 
-  <view class="all-data">
-    <view class="all-data-header">本月支出 ￥{{totalAccount}}</view>
-  </view>
 
   <view class="table">
     <view class="tr header">
@@ -41,5 +32,6 @@
     <view class="no-data" wx:if="{{accountList.length == 0}}">快记上一笔哦~</view>
   </view>
 
+  <Authorize wx:if="{{isShowAuthorize}}" bindonGetUserInfo="onGetUserInfo"></Authorize>
 
 </view>

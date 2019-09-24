@@ -1,0 +1,13 @@
+<view class="modal-pop"></view>
+<view class="modal-pop-content">
+  <view class="modal-pop-logo">
+    <image src="../../resources/logo.png"></image>
+  </view>
+  <view class="modal-pop-tips">
+      e帐申请获得小主人的以下权限
+    </view>
+  <view class="modal-pop-authorize-list">
+      获得小主人的公开信息(昵称、头像等)
+    </view>
+  <button class="primary-btn" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">授权</button>
+</view>

@@ -55,6 +55,16 @@
 }
 
 
+.img-warp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20rpx; 
+}
+
+.btn-warp {
+  margin-top: 20rpx;
+}
 
 
 

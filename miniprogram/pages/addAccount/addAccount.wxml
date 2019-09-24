@@ -4,7 +4,7 @@
     <view class="tr">
       <view class="td name">
         分类
-        <view class="require">*</view>
+        <view class="require" wx:if="{{!isLook}}">*</view>
       </view>
       <view class="td value">
         <picker bindchange="bindPickerChange" range-key="name" value="{{index}}" range="{{accountTypes}}">
@@ -17,24 +17,26 @@
     <view class="tr">
       <view class="td name">
         金额
-        <view class="require">*</view>
+        <view class="require" wx:if="{{!isLook}}">*</view>
       </view>
       <view class="td value">
-        <input type="text" value="{{accountVal}}" bindinput="addInput" placeholder="请输入金额" placeholder-class="phcolor" />
+        <input disabled="{{isLook}}" type="text" value="{{accountVal}}" bindinput="addInput" placeholder="请输入金额" placeholder-class="phcolor" />
       </view>
     </view>
+
     <view class="tr">
       <view class="td name">
         名称
       </view>
       <view class="td value">
-        <input type="text" value="{{accountName}}" bindinput="nameInput" placeholder="请输入名称" placeholder-class="phcolor" />
+        <input disabled="{{isLook}}" type="text" value="{{accountName}}" bindinput="nameInput" placeholder="请输入名称" placeholder-class="phcolor" />
       </view>
     </view>
+
     <view class="tr">
       <view class="td name">时间</view>
       <view class="td value">
-        <picker mode="date" value="{{time}}" start="2019-09-01" end="{{today}}" bindchange="bindDateChange">
+        <picker disabled="{{isLook}}" mode="date" value="{{time}}" start="2019-09-01" end="{{today}}" bindchange="bindDateChange">
           <view class="picker">
             {{time}}
             </view>
@@ -42,26 +44,25 @@
       </view>
     </view>
 
-    <view class="tr">
+    <view class="tr" wx:if="{{!isLook}}">
       <view class="td name">图片</view>
       <view class="td value">
         <view bindtap="selectImg">拍照</view>
       </view>
     </view>
 
-    <view class="tr">
+    <view class="tr" wx:if="{{accountMark}}">
       <view class="td name">备注</view>
       <view class="td value">
-        <input type="text" value="{{accountMark}}" placeholder="请输入备注" bindinput="markInput" placeholder-class="phcolor" />
+        <input disabled="{{isLook}}" type="text" value="{{accountMark}}" placeholder="请输入备注" bindinput="markInput" placeholder-class="phcolor" />
       </view>
     </view>
-    <view class="img-warp">
+    <view class="img-warp" wx:if="{{fileid}}">
       <image style="width: {{imgWidth}}rpx; height: {{imgHeight}}rpx" src="{{fileid}}" bindload="imageLoad"></image>
     </view>
     <view class="btn-warp">
       <button wx:if="{{!isLook}}" class="btn-sure btn" bindtap="sure">确认记账</button>
       <button wx:else  class="btn-sure btn" bindtap="delClick">删除</button>
     </view>
-
   </view>
 </view>

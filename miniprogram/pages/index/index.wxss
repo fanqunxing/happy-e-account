@@ -52,35 +52,23 @@ page {
   padding-right: 30rpx;
 }
 
-.all-data-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;  
-  width: 100%;
-  color: green;
-  font-weight: 500;
-  line-height: 30px;
-  font-size: 12px;
-}
 
 .del-account {
-  background: #168ced;
   width: 90rpx;
   height: 50rpx;
   border-radius: 4rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  /* font-size: 25rpx; */
 }
 
 .add-account {
-  width: 150rpx;
+  width: 200rpx;
   background: #168ced;
   color: #fff;
   font-size: 30rpx;
   margin-top: 30rpx;
+  margin-bottom: 40rpx;
 }
 
 .table {
@@ -116,3 +104,7 @@ page {
   color: #333;
 }
 
+.total-account {
+  padding-right: 30rpx;
+  font-size: 35rpx;
+}

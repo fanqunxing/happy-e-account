@@ -1,6 +1,7 @@
 //index.js
 const app = getApp()
 var { getMonthAndDay } = require("../../public/js/common.js");
+
 Page({
   data: {
     isAdmin: false,
@@ -10,7 +11,8 @@ Page({
     takeSession: false,
     requestResult: '',
     accountList: [],
-    totalAccount: 0
+    totalAccount: 0,
+    isShowAuthorize: false
   },
 
   getAllAccoutList() {
@@ -96,15 +98,14 @@ Page({
   },
 
   onLoad: function () {
-
     this.onGetOpenid();
     // 获取用户信息
     wx.getSetting({
       success: res => {
         if (!res.authSetting['scope.userInfo']) {
-          wx.navigateTo({
-            url: '../authorize/authorize'
-          })
+          this.setData({
+            isShowAuthorize: true
+          });
         } else {
           wx.getUserInfo({
             success: (res) => {
@@ -130,31 +131,20 @@ Page({
     })
   },
 
-  delClick(event) {
-    var accountName = event.target.dataset.accountname;
-    var id = event.target.dataset.id;
-    wx.showModal({
-      title: '提示',
-      content: `您确定要删除"${accountName}"吗？`,
-      success: (sm) => {
-        if (sm.confirm) {
-          this.delAccount(id);
-        }
-      }
-    });
-  },
-
-  delAccount(id) {
-    const db = wx.cloud.database({});
-    const table = db.collection('db_account');
-    table.doc(id).remove({
-      success: (res) => {
-        this.getAllAccoutList();
-        wx.showToast({
-          title: '删除成功'
-        });
-      }
-    })
+  // 获取登录权限
+  onGetUserInfo(e) {
+    var userInfo = e.detail;
+    if (userInfo) {
+      this.setData({
+        logged: true,
+        avatarUrl: userInfo.avatarUrl,
+        userInfo: userInfo
+      });
+      app.globalData.myUserInfo = userInfo;
+      this.setData({
+        isShowAuthorize: false
+      });
+    }
   }
 
 })
