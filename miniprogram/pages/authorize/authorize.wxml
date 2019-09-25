@@ -1,6 +1,0 @@
-<view>
-  <button 
-    open-type="getUserInfo" 
-    bindgetuserinfo="onGetUserInfo"
-  >点击加入我们吧</button>
-</view>

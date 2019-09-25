@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/addAccount/addAccount",
-    "pages/authorize/authorize",
     "pages/home/home"
   ],
   "window": {

@@ -1,9 +1,6 @@
-var common = require("../../public/js/common.js");
-var { formatDate } = common;
-const app = getApp();
-
-const db = wx.cloud.database({});
-const db_account = db.collection('db_account');
+var { formatDate } = require("../../public/js/common.js");
+var API = require('../../fetch/index.js');
+var app = getApp();
 
 Page({
   data: {
@@ -27,7 +24,6 @@ Page({
     var obj = accountTypes.find(({ code }) => {
       return code == accountType;
     });
-    console.log({ obj })
     if (obj) {
       var { name } = obj;
       this.setData({
@@ -37,7 +33,6 @@ Page({
   },
 
   onLoad(options) {
-    var _this = this;
     this.getAccoutTypes(() => {
       var { look, id } = options;
       if (look == '1') {
@@ -45,19 +40,19 @@ Page({
           isLook: true,
           id
         });
-        db_account.doc(id).get({
-          success: res => {
-            var data = res.data;
-            _this.setData({
-              accountMark: data.accountMark,
-              accountType: data.accountType,
-              accountName: data.accountName,
-              accountVal: data.accountVal,
-              time: data.time,
-              fileid: data.fileid || ''
-            });
-            _this.setAccountTypeName();
-          }
+        API.getAccountById({
+          data: { id }
+        }).then(res => {
+          var data = res.data;
+          this.setData({
+            accountMark: data.accountMark,
+            accountType: data.accountType,
+            accountName: data.accountName,
+            accountVal: data.accountVal,
+            time: data.time,
+            fileid: data.fileid || ''
+          });
+          this.setAccountTypeName();
         });
       }
     });
@@ -82,39 +77,34 @@ Page({
 
   delAccount() {
     var id = this.data.id;
-    const db = wx.cloud.database({});
-    const table = db.collection('db_account');
-    wx.cloud.deleteFile({
-      fileList: [this.data.fileid],
-      success: res => {
-      },
-      fail: err => {
+    API.deleteFile({
+      data: {
+        fileList: [this.data.fileid]
       }
     })
-    table.doc(id).remove({
-      success: (res) => {
-        wx.showToast({
-          title: '删除成功'
-        });
-        setTimeout(() => {
-          wx.navigateBack();
-        }, 300);
-      },
+    API.deleteAccoutById({
+      data: {
+        id
+      }
+    }).then(res => {
+      wx.showToast({
+        title: '删除成功'
+      });
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 300);
     })
+
   },
 
   getAccoutTypes(fn) {
-    const db = wx.cloud.database({});
-    const table = db.collection('db_accountType');
-    table.get({
-      success: (res) => {
-        var { data } = res;
+    API.getAccoutTypes()
+      .then(data => {
         this.setData({
           accountTypes: data
         });
         fn && fn()
-      }
-    })
+      });
   },
 
   bindPickerChange(event) {
@@ -199,22 +189,21 @@ Page({
   selectImg() {
     var openid = app.globalData.openid;
     var time = this.data.time;
-    wx.chooseImage({
-      sizeType: ['compressed'],
-      success: chooseResult => {
-        wx.cloud.uploadFile({
-          cloudPath: `${openid}/${time}/${Date.now()}.png`,
-          filePath: chooseResult.tempFilePaths[0],
-          success: res => {
-            this.setData({
-              fileid: res.fileID
-            });
-          },
-          fail: e => {
-            console.log(e);
-          }
-        })
+    API.chooseImage({
+      data: {
+        sizeType: ['compressed']
       }
+    }).then(chooseResult => {
+      API.uploadFile({
+        data: {
+          cloudPath: `${openid}/${time}/${Date.now()}.png`,
+          filePath: chooseResult.tempFilePaths[0]
+        }
+      }).then(res => {
+        this.setData({
+          fileid: res.fileID
+        });
+      });
     });
   },
 
@@ -222,12 +211,10 @@ Page({
     var ischeck = this.checkVail();
     if (!ischeck) return;
     var { accountName, accountVal, accountMark, accountType, time, accountTypeName, fileid } = this.data;
-    const db = wx.cloud.database({});
-    const table = db.collection('db_account');
     if (!accountName) {
       accountName = accountTypeName;
     }
-    table.add({
+    API.addAccout({
       data: {
         accountMark,
         accountType,
@@ -235,15 +222,13 @@ Page({
         accountVal,
         time,
         fileid
-      },
-      success: res => {
-        wx.navigateBack();
-        this.setData({
-          accountName: '',
-          accountVal: 0
-        });
       }
+    }).then(() => {
+      wx.navigateBack();
+      this.setData({
+        accountName: '',
+        accountVal: 0
+      });
     });
-
   }
 })

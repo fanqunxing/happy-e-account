@@ -1,6 +1,7 @@
 //index.js
 const app = getApp()
 var { getMonthAndDay } = require("../../public/js/common.js");
+var API = require('../../fetch/index.js');
 
 Page({
   data: {
@@ -24,13 +25,10 @@ Page({
   },
 
   getAllAccout() {
-    const _this = this;
-    wx.cloud.callFunction({
-      name: 'getaccountlist',
-      data: {},
-      complete: respsonse => {
-        var res = respsonse.result;
-        var { data } = res;
+    API.getaccountlist({
+      data: {}
+    })
+      .then(data => {
         data = data.reverse();
         if (Array.isArray(data)) {
           var totalAccount = 0;
@@ -39,16 +37,14 @@ Page({
             item.time = getMonthAndDay(time);
             totalAccount += Number(accountVal);
           });
-          _this.setData({
-            totalAccount
+          this.setData({
+            totalAccount: totalAccount.toFixed(1)
           })
         }
-
-        _this.setData({
+        this.setData({
           accountList: data
         });
-      }
-    });
+      })
   },
 
   onShow() {
@@ -61,27 +57,22 @@ Page({
         avatarUrl: myUserInfo.avatarUrl || avatarUrl
       });
     }
+    // 返回刷新，这个是必要的
     this.getAllAccoutList();
   },
 
   // 设置openid
   onGetOpenid: function (fn) {
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid;
-        if (res.result.openid === "oDs3N4oTf9m4KL8ozMp8iNZj6-zA") {
+    API.login({})
+      .then(({ openid }) => {
+        app.globalData.openid = openid;
+        if (openid === "oDs3N4oTf9m4KL8ozMp8iNZj6-zA") {
           this.setData({
             isAdmin: true
           });
         }
         fn && fn();
-      },
-      fail: err => {
-      }
-    })
+      })
   },
 
   goMyHome() {
@@ -99,27 +90,22 @@ Page({
 
   onLoad: function () {
     this.onGetOpenid();
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (!res.authSetting['scope.userInfo']) {
+    API.getSetting().then(res => {
+      if (!res.authSetting['scope.userInfo']) {
+        this.setData({
+          isShowAuthorize: true
+        });
+      } else {
+        API.getUserInfo().then(res => {
+          var { userInfo } = res;
           this.setData({
-            isShowAuthorize: true
+            logged: true,
+            avatarUrl: userInfo.avatarUrl,
+            userInfo: userInfo
           });
-        } else {
-          wx.getUserInfo({
-            success: (res) => {
-              var { userInfo } = res;
-              this.setData({
-                logged: true,
-                avatarUrl: userInfo.avatarUrl,
-                userInfo: userInfo
-              });
-              app.globalData.userInfo = userInfo;
-              this.getAllAccoutList();
-            }
-          })
-        }
+          app.globalData.userInfo = userInfo;
+          this.getAllAccoutList();
+        });
       }
     })
   },
