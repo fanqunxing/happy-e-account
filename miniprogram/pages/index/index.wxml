@@ -2,7 +2,7 @@
   <view class="userinfo">
     <view class="my-userinfo">
       <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar" style="background-image: url({{avatarUrl}})"></button>
-      <view class="nickName">{{userInfo.nickName}}</view>
+      <view class="nickName">{{userInfo.nickName || '开心用户'}}</view>
     </view>
     <!-- 学问勤中得,富裕俭中来 -->
     <view class="total-account">总支出 ￥{{totalAccount}}</view>

@@ -16,14 +16,6 @@ Page({
     isShowAuthorize: false
   },
 
-  getAllAccoutList() {
-    if (!app.globalData.openid) {
-      this.onGetOpenid(this.getAllAccout);
-    } else {
-      this.getAllAccout();
-    }
-  },
-
   getAllAccout() {
     API.getaccountlist({
       data: {}
@@ -58,21 +50,7 @@ Page({
       });
     }
     // 返回刷新，这个是必要的
-    this.getAllAccoutList();
-  },
-
-  // 设置openid
-  onGetOpenid: function (fn) {
-    API.login({})
-      .then(({ openid }) => {
-        app.globalData.openid = openid;
-        if (openid === "oDs3N4oTf9m4KL8ozMp8iNZj6-zA") {
-          this.setData({
-            isAdmin: true
-          });
-        }
-        fn && fn();
-      })
+    this.getAllAccout();
   },
 
   goMyHome() {
@@ -89,14 +67,26 @@ Page({
   },
 
   onLoad: function () {
-    this.onGetOpenid();
     API.getSetting().then(res => {
-      if (!res.authSetting['scope.userInfo']) {
-        this.setData({
-          isShowAuthorize: true
-        });
-      } else {
-        API.getUserInfo().then(res => {
+      // 此时为未鉴权的用户
+      if (res.authSetting['scope.userInfo']) {
+        // 已经鉴权的用户可以登录并获取openid
+        this.tologin()
+          .then(() => {
+            this.getAllAccout();
+          });
+      }
+    })
+  },
+
+  tologin() {
+    return new Promise((resolve, reject) => {
+      API.login({})
+        .then(({ openid }) => {
+          app.globalData.openid = openid;
+          return API.getUserInfo();
+        })
+        .then(res => {
           var { userInfo } = res;
           this.setData({
             logged: true,
@@ -104,17 +94,26 @@ Page({
             userInfo: userInfo
           });
           app.globalData.userInfo = userInfo;
-          this.getAllAccoutList();
+          resolve();
+        })
+        .catch(e => {
+          reject(e);
         });
-      }
     })
+
   },
 
   // 跳转记账页面
   addAccount() {
-    wx.navigateTo({
-      url: '../addAccount/addAccount'
-    })
+    if (!app.globalData.openid) {
+      this.setData({
+        isShowAuthorize: true
+      });
+    } else {
+      wx.navigateTo({
+        url: '../addAccount/addAccount'
+      })
+    }
   },
 
   // 获取登录权限
@@ -131,6 +130,12 @@ Page({
         isShowAuthorize: false
       });
     }
+    this.tologin()
+    .then(() => {
+      wx.navigateTo({
+        url: '../addAccount/addAccount'
+      });
+    });
   }
 
 })
