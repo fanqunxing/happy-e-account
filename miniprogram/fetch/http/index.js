@@ -19,6 +19,22 @@ function getaccountlist(data = {}) {
   });
 }
 
+// 获取记账信息列表
+function sendmsg(data = {}) {
+  return new Promise((resolve, reject) => {
+    wx.cloud.callFunction({
+      name: 'sendmsg',
+      data,
+      complete: res => {
+        resolve(res);
+      },
+      fail: error => {
+        reject(error);
+      }
+    });
+  });
+}
+
 // 登录
 function login(data) {
   return new Promise((resolve, reject) => {
@@ -172,5 +188,6 @@ module.exports = {
   addAccout,
   deleteFile,
   deleteAccoutById,
-  login
+  login,
+  sendmsg
 }

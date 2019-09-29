@@ -13,6 +13,12 @@
     <button class="add-account" bindtap="addAccount">记一笔</button>
   </view>
 
+  <form bindsubmit="bindSendMsg" report-submit="ture">
+    <button hover-class="plain-hover" form-type="submit"> 
+      name
+    </button>
+  </form>
+
 
   <view class="table">
     <view class="tr header">

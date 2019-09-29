@@ -79,6 +79,32 @@ Page({
     })
   },
 
+  bindSendMsg: function (e) {
+    var formId = e.detail.formId;
+    console.log({formId});
+    API.sendmsg({
+      data: {
+        formId
+      }
+    }).then(data => {
+      console.log(data);
+    })
+    // wx.request({
+    //   url: 'https://.../sendMsg',
+    //   data: {
+    //     formId: formId,
+    //     openid: openid,
+    //     type: type
+    //   },
+    //   header: {
+    //     'content-type': 'application/json' // 默认值
+    //   },
+    //   success(res) {
+    //     console.log("sendMsg result", res.data)
+    //   }
+    // })
+  },
+
   tologin() {
     return new Promise((resolve, reject) => {
       API.login({})
@@ -131,11 +157,11 @@ Page({
       });
     }
     this.tologin()
-    .then(() => {
-      wx.navigateTo({
-        url: '../addAccount/addAccount'
+      .then(() => {
+        wx.navigateTo({
+          url: '../addAccount/addAccount'
+        });
       });
-    });
   }
 
 })
