@@ -4,21 +4,22 @@
       <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar" style="background-image: url({{avatarUrl}})"></button>
       <view class="nickName">{{userInfo.nickName || '开心用户'}}</view>
     </view>
-    <!-- 学问勤中得,富裕俭中来 -->
-    <view class="total-account">总支出 ￥{{totalAccount}}</view>
+    
+    <view>
+      <view class="total-account">本月支出 ￥{{currentMonthAccount}}</view>
+      <view class="total-account">总支出 ￥{{totalAccount}}</view>
+    </view>
     <!-- <view class="home" bindtap="goMyHome">我的家园</view> -->
   </view>
 
-  <view class="add-account-warp">
-    <button class="add-account" bindtap="addAccount">记一笔</button>
+  <view class="blackboard-warp">
+    <view class="blackboard">{{blackboard}}</view>
+    <view class="blackboard-add-account" bindtap="addAccount">记一笔</view>
   </view>
-
-  <form bindsubmit="bindSendMsg" report-submit="ture">
-    <button hover-class="plain-hover" form-type="submit"> 
-      name
-    </button>
-  </form>
-
+  
+  <!-- <view class="add-account-warp">
+    <button class="add-account" bindtap="addAccount">记一笔</button>
+  </view> -->
 
   <view class="table">
     <view class="tr header">

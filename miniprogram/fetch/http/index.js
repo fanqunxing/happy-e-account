@@ -2,6 +2,7 @@
 const db = wx.cloud.database({});
 const db_account = db.collection('db_account');
 const db_accountType = db.collection('db_accountType');
+const db_blackboard = db.collection('db_blackboard');
 
 // 获取记账信息列表
 function getaccountlist(data = {}) {
@@ -106,6 +107,20 @@ function getAccoutTypes() {
   });
 }
 
+function getBlackboard() {
+  return new Promise((resolve, reject) => {
+    db_blackboard.get({
+      success: (res) => {
+        resolve(res.data);
+      },
+      fail: error => {
+        reject(error);
+      }
+    })
+  });
+};
+
+
 function uploadFile(data = {}) {
   return new Promise((resolve, reject) => {
     wx.cloud.uploadFile({
@@ -189,5 +204,6 @@ module.exports = {
   deleteFile,
   deleteAccoutById,
   login,
-  sendmsg
+  sendmsg,
+  getBlackboard
 }

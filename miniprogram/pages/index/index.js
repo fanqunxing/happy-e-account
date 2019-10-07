@@ -13,24 +13,47 @@ Page({
     requestResult: '',
     accountList: [],
     totalAccount: 0,
-    isShowAuthorize: false
+    currentMonthAccount: 0,
+    isShowAuthorize: false,
+    blackboard: '学问勤中得, 富裕俭中来'
+  },
+
+  isCurrentMonth(time) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    const last = new Date(time);
+    const lastYear = last.getFullYear();
+    const lastMonth = last.getMonth();
+
+    if (year == lastYear && month == lastMonth) {
+      return true;
+    }
+    return false;
   },
 
   getAllAccout() {
     API.getaccountlist({
       data: {}
     })
-      .then(data => {
-        data = data.reverse();
+      .then(res => {
+        // console.log(res);
+        var data = JSON.parse(JSON.stringify(res)).reverse();
         if (Array.isArray(data)) {
           var totalAccount = 0;
+          var currentMonthAccount = 0;
           data.forEach((item) => {
             var { accountVal, time } = item;
             item.time = getMonthAndDay(time);
+            if (this.isCurrentMonth(time)) {
+              currentMonthAccount += Number(accountVal);
+            };
             totalAccount += Number(accountVal);
           });
           this.setData({
-            totalAccount: totalAccount.toFixed(1)
+            totalAccount: totalAccount.toFixed(1),
+            currentMonthAccount: currentMonthAccount.toFixed(1)
           })
         }
         this.setData({
@@ -67,6 +90,14 @@ Page({
   },
 
   onLoad: function () {
+    API.getBlackboard().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        console.log(data[0].content);
+        this.setData({
+          blackboard: data[0].content
+        })
+      }
+    });
     API.getSetting().then(res => {
       // 此时为未鉴权的用户
       if (res.authSetting['scope.userInfo']) {
